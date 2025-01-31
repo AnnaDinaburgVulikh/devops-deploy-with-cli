@@ -1,0 +1,12 @@
+- name: Deploy Web App Locally
+  hosts: localhost
+  connection: local
+  become: false
+  vars:
+    docker_image: "flask-multistage"
+    docker_tag: "latest"
+    action: "deploy"
+    host_port: "5001"
+    container_port: "5001"
+  roles:
+    - webapp

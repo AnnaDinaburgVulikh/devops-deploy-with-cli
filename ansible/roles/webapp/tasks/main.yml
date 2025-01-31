@@ -1,0 +1,11 @@
+- name: Run Deployment Tasks
+  include_tasks: deploy.yml
+  when: action == "deploy"
+
+- name: Run Update Tasks
+  include_tasks: update.yml
+  when: action == "update"
+
+- name: Run Rollback Tasks
+  include_tasks: rollback.yml
+  when: action == "rollback"

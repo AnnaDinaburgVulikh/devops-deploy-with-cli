@@ -1,0 +1,17 @@
+- name: Get previous image ID
+  shell: docker images --quiet {{ docker_image }} | tail -n 2 | head -n 1
+  register: previous_image
+
+- name: Stop current container
+  shell: docker stop webapp || true
+
+- name: Remove current container
+  shell: docker rm webapp || true
+
+- name: Start previous version
+  shell: |
+    docker run -d --name webapp \
+    -p {{ host_port }}:{{ container_port }} \
+    --restart always \
+    {{ previous_image.stdout }}
+  when: previous_image.stdout != ""

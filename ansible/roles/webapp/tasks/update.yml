@@ -1,0 +1,12 @@
+- name: Stop existing container
+  shell: docker stop webapp || true
+
+- name: Remove old container
+  shell: docker rm webapp || true
+
+- name: Start new container with updated image
+  shell: |
+    docker run -d --name webapp \
+    -p {{ host_port }}:{{ container_port }} \
+    --restart always \
+    "{{ docker_image }}:{{ docker_tag }}"
