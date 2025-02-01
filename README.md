@@ -52,7 +52,7 @@ Before deploying, you need to build the Docker image for your application:
 ## Usage
 The basic syntax for using the CLI is:
 ```bash
-deploy-cli [OPTIONS] COMMAND
+pyton cli.py [OPTIONS] COMMAND
 ```
 
 Available commands:

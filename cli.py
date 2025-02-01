@@ -61,7 +61,7 @@ def load_config(config_path: str = None):
 @click.option("--update", is_flag=True, help="Update the existing deployment")
 @click.option("--rollback", is_flag=True, help="Rollback the deployment")
 @click.pass_context
-def cli(ctx, config, env, verbose, log, secret, deploy, update, rollback):
+def cli_main(ctx, config, env, verbose, log, secret, deploy, update, rollback):
     """CLI tool for managing web application deployment."""
     ctx.ensure_object(dict)
     ctx.obj["CONFIG"] = load_config(config)
@@ -100,4 +100,4 @@ def cli(ctx, config, env, verbose, log, secret, deploy, update, rollback):
 
 
 if __name__ == "__main__":
-    cli()
+    cli_main()
