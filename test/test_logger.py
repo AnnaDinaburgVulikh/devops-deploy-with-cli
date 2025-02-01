@@ -1,6 +1,8 @@
 import logging
-from cli.utils import setup_logging
-from cli.utils import logger
+
+from cli_utils.logger import setup_logging
+
+logger = logging.getLogger("deployment_logger")
 
 
 def test_logger_info(caplog):

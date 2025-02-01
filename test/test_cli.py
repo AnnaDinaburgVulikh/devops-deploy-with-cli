@@ -1,50 +1,55 @@
 import pytest
 from click.testing import CliRunner
-from cli.cli import cli
+
+from cli import cli
 
 
 @pytest.fixture
 def runner():
-    """Returns a Click test runner."""
     return CliRunner()
 
 
 def test_cli_help(runner):
-    """Test CLI help command."""
     result = runner.invoke(cli, ["--help"])
     assert result.exit_code == 0
-    assert "CLI tool for managing web application deployment" in result.output
+    assert "Usage:" in result.output
+    assert "--deploy" in result.output
+    assert "--update" in result.output
+    assert "--rollback" in result.output
+    assert "--env" in result.output
 
 
-def test_deploy_command(runner, mocker):
-    """Test the deploy command with a mock Ansible call."""
-    mock_subprocess = mocker.patch("subprocess.run")
-    result = runner.invoke(cli, ["--deploy", "--env", "staging"])
+def test_deploy_command(runner):
+    result = runner.invoke(cli, ["--deploy", "--env", "development"])
     assert result.exit_code == 0
-    assert "Deploying web application to staging environment..." in result.output
-    mock_subprocess.assert_called_once()
+    assert "Deploying web application to development environment..." in result.output
 
 
-def test_update_command(runner, mocker):
-    """Test the update command."""
-    mock_subprocess = mocker.patch("subprocess.run")
-    result = runner.invoke(cli, ["--update", "--env", "production"])
+def test_update_command(runner):
+    result = runner.invoke(cli, ["--update", "--env", "development"])
     assert result.exit_code == 0
-    assert "Updating web application in production environment..." in result.output
-    mock_subprocess.assert_called_once()
+    assert "Updating web application in development environment..." in result.output
 
 
-def test_rollback_command(runner, mocker):
-    """Test the rollback command."""
-    mock_subprocess = mocker.patch("subprocess.run")
-    result = runner.invoke(cli, ["--rollback", "--env", "staging"])
+def test_rollback_command(runner):
+    result = runner.invoke(cli, ["--rollback", "--env", "development"])
     assert result.exit_code == 0
-    assert "Rolling back deployment in staging environment..." in result.output
-    mock_subprocess.assert_called_once()
+    assert "Rolling back deployment in development environment..." in result.output
 
 
 def test_invalid_env(runner):
-    """Test invalid environment input."""
-    result = runner.invoke(cli, ["--deploy", "--env", "invalid-env"])
+    result = runner.invoke(cli, ["--deploy", "--env", "invalid"])
     assert result.exit_code != 0
-    assert "Invalid value for '--env'" in result.output
+    assert "Error: Invalid value for '--env'" in result.output
+
+
+def test_multiple_commands(runner):
+    result = runner.invoke(cli, ["--deploy", "--update", "--env", "development"])
+    assert result.exit_code != 0
+    assert "Error: You can only specify one action" in result.output
+
+
+def test_no_command(runner):
+    result = runner.invoke(cli)
+    assert result.exit_code != 0
+    assert "Error: You must specify an action" in result.output

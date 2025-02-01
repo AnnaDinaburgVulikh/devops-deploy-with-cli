@@ -1,11 +1,11 @@
 import click
 
-from utils.execute import execute_and_log
+from cli_utils.execute import execute_and_log
 
 
 @click.command()
 @click.pass_context
-def deploy(ctx):
+def deploy_app(ctx):
     """Deploy the web application."""
     logger = ctx.obj["LOGGER"]
 

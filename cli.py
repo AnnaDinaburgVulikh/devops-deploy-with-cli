@@ -1,18 +1,20 @@
 import logging
+import sys
 from dataclasses import dataclass
 
 import click
 import os
 import yaml
-from commands.deploy import deploy
-from commands.update import update
-from commands.rollback import rollback
-from utils.input_validation import (
+
+from cli_commands.deploy import deploy_app
+from cli_commands.update import update_app
+from cli_commands.rollback import rollback_app
+from cli_utils.input_validation import (
     validate_secret,
     validate_config_path,
     validate_config_data,
 )
-from utils.logger import setup_logging
+from cli_utils.logger import setup_logging
 
 
 @dataclass
@@ -40,7 +42,7 @@ def load_config(config_path: str = None):
     return validate_config_data(config)
 
 
-@click.group()
+@click.command()
 @click.option(
     "--config", callback=validate_config_path, help="Path to configuration file"
 )
@@ -55,8 +57,11 @@ def load_config(config_path: str = None):
 @click.option(
     "--secret", callback=validate_secret, help="key for secret in hashicorp vault"
 )
+@click.option("--deploy", is_flag=True, help="Deploy the web application")
+@click.option("--update", is_flag=True, help="Update the existing deployment")
+@click.option("--rollback", is_flag=True, help="Rollback the deployment")
 @click.pass_context
-def cli(ctx, config, env, verbose, log, secret):
+def cli(ctx, config, env, verbose, log, secret, deploy, update, rollback):
     """CLI tool for managing web application deployment."""
     ctx.ensure_object(dict)
     ctx.obj["CONFIG"] = load_config(config)
@@ -68,10 +73,31 @@ def cli(ctx, config, env, verbose, log, secret):
     setup_logging(ctx.obj["LOG"], verbose)
     ctx.obj["LOGGER"] = logging.getLogger("deployment_logger")
 
+    # Ensure only one action is selected
+    actions = [deploy, update, rollback]
+    selected_actions = sum(actions)
 
-cli.add_command(deploy)
-cli.add_command(update)
-cli.add_command(rollback)
+    if selected_actions > 1:
+        click.echo(
+            "Error: You can only specify one action: --deploy, --update, or --rollback.",
+            err=True,
+        )
+        sys.exit(1)  # ✅ Exit the script with an error status
+
+    if selected_actions == 0:
+        click.echo(
+            "Error: You must specify an action: --deploy, --update, or --rollback.",
+            err=True,
+        )
+        sys.exit(1)
+
+    if deploy:
+        ctx.invoke(deploy_app)
+    elif update:
+        ctx.invoke(update_app)
+    elif rollback:
+        ctx.invoke(rollback_app)
+
 
 if __name__ == "__main__":
     cli()

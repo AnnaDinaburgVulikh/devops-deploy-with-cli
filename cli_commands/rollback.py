@@ -1,11 +1,11 @@
 import click
 
-from utils.execute import execute_and_log
+from cli_utils.execute import execute_and_log
 
 
 @click.command()
 @click.pass_context
-def rollback(ctx):
+def rollback_app(ctx):
     """Rollback the deployment."""
     logger = ctx.obj["LOGGER"]
 

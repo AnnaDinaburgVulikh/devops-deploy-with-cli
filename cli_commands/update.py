@@ -1,11 +1,11 @@
 import click
 
-from utils.execute import execute_and_log
+from cli_utils.execute import execute_and_log
 
 
 @click.command()
 @click.pass_context
-def update(ctx):
+def update_app(ctx):
     """Update the existing deployment."""
     logger = ctx.obj["LOGGER"]
 
