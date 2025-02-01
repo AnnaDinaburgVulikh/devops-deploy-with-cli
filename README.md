@@ -80,3 +80,10 @@ container_port: 5001
 ansible_inventory: "ansible/inventory.ini"
 log_file: "logs/deploy.log"
 ```
+
+## Testing
+All tests can be found in the tests folder
+For test execution run (make sure to run from the project base folder):
+```shell
+pytest . -vvv
+```

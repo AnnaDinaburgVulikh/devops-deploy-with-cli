@@ -22,19 +22,19 @@ def test_cli_help(runner):
 def test_deploy_command(runner):
     result = runner.invoke(cli, ["--deploy", "--env", "development"])
     assert result.exit_code == 0
-    assert "Deploying web application to development environment..." in result.output
+    assert "Deploy successful!" in result.output
 
 
 def test_update_command(runner):
     result = runner.invoke(cli, ["--update", "--env", "development"])
     assert result.exit_code == 0
-    assert "Updating web application in development environment..." in result.output
+    assert "Update successful!" in result.output
 
 
 def test_rollback_command(runner):
     result = runner.invoke(cli, ["--rollback", "--env", "development"])
     assert result.exit_code == 0
-    assert "Rolling back deployment in development environment..." in result.output
+    assert "Rollback successful!" in result.output
 
 
 def test_invalid_env(runner):
