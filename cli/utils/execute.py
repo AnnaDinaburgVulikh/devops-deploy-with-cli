@@ -12,10 +12,10 @@ def execute_and_log(command, logger):
         )
 
         # Capture Ansible output in real-time
-        for line in iter(process.stdout.readline, ''):
+        for line in iter(process.stdout.readline, ""):
             logger.info(line.strip())
 
-        for line in iter(process.stderr.readline, ''):
+        for line in iter(process.stderr.readline, ""):
             logger.error(line.strip())
 
         process.stdout.close()

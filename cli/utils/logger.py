@@ -32,5 +32,6 @@ def setup_logging(log_file=None, verbose=False):
     for handler in logger.handlers:
         handler.flush()
 
+
 # Expose logger globally
 __all__ = ["logger", "setup_logging"]

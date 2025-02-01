@@ -10,6 +10,7 @@ def test_logger_info(caplog):
         logger.info("Test log message")
     assert "Test log message" in caplog.text
 
+
 def test_logger_debug(caplog):
     """Test logger debug messages with verbose mode."""
     setup_logging(verbose=True)

@@ -7,7 +7,11 @@ import yaml
 from commands.deploy import deploy
 from commands.update import update
 from commands.rollback import rollback
-from utils.input_validation import validate_secret, validate_config_path, validate_config_data
+from utils.input_validation import (
+    validate_secret,
+    validate_config_path,
+    validate_config_data,
+)
 from utils.logger import setup_logging
 
 
@@ -37,11 +41,20 @@ def load_config(config_path: str = None):
 
 
 @click.group()
-@click.option("--config", callback=validate_config_path, help="Path to configuration file")
-@click.option("--env", type=click.Choice(["development", "staging", "production"]), default="development", help="Deployment environment")
+@click.option(
+    "--config", callback=validate_config_path, help="Path to configuration file"
+)
+@click.option(
+    "--env",
+    type=click.Choice(["development", "staging", "production"]),
+    default="development",
+    help="Deployment environment",
+)
 @click.option("--verbose", is_flag=True, help="Enable verbose output")
 @click.option("--log", type=click.Path(), help="Path to log file")
-@click.option("--secret", callback=validate_secret,help="key for secret in hashicorp vault")
+@click.option(
+    "--secret", callback=validate_secret, help="key for secret in hashicorp vault"
+)
 @click.pass_context
 def cli(ctx, config, env, verbose, log, secret):
     """CLI tool for managing web application deployment."""
@@ -54,6 +67,7 @@ def cli(ctx, config, env, verbose, log, secret):
 
     setup_logging(ctx.obj["LOG"], verbose)
     ctx.obj["LOGGER"] = logging.getLogger("deployment_logger")
+
 
 cli.add_command(deploy)
 cli.add_command(update)
