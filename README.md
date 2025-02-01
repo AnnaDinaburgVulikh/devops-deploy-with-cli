@@ -33,6 +33,22 @@ DevOps Deploy CLI is a command-line interface tool for managing web application 
    pip install -e ".[dev]"
    ```
 
+## Building the App Image
+Before deploying, you need to build the Docker image for your application:
+1. Navigate to the directory containing your Dockerfile:
+   ```bash
+   cd docker
+   ```
+2. Build the Docker image:
+   ```bash
+   docker build -t flask-multistage:latest .
+   ```
+3. Verify the image was created:
+   ```bash
+   docker images
+   ```
+   You should see your flask-multistage image in the list.
+
 ## Usage
 The basic syntax for using the CLI is:
 ```bash
