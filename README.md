@@ -67,7 +67,7 @@ Options:
 - `--secret TEXT`: Secret key for secure operations
 Example:
 ```bash
-deploy-cli --deploy --env development --config config.yml
+pyton cli.py --deploy --env development --config config.yml
 ```
 
 ## Configuration
