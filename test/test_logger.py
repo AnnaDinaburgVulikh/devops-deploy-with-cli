@@ -1,6 +1,7 @@
-import pytest
 import logging
-from utils.logger import setup_logging, logger
+from cli.utils import setup_logging
+from cli.utils import logger
+
 
 def test_logger_info(caplog):
     """Test logger info messages."""

@@ -1,0 +1,6 @@
+docker_image: "flask-multistage"
+docker_tag: "latest"
+host_port: "5001"
+container_port: "5001"
+ansible_inventory: "ansible/inventory.ini"
+log_file: "logs/deploy.log"

@@ -1,3 +1,14 @@
+- name: Retrieve Docker credentials from HashiCorp Vault (if secret is provided)
+  set_fact:
+    docker_creds: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/{{ secret_key }} token={{ lookup('env', 'VAULT_TOKEN') }} url={{ lookup('env', 'VAULT_ADDR') }}') }}"
+  when: secret_key | length > 0
+
+- name: Docker Login (only if credentials are retrieved)
+  shell: >
+    echo "{{ docker_creds.password }}" | docker login -u {{ docker_creds.username }} --password-stdin
+  when: docker_creds.password is defined and docker_creds.username is defined
+  no_log: true
+
 - name: Run Deployment Tasks
   include_tasks: deploy.yml
   when: action == "deploy"

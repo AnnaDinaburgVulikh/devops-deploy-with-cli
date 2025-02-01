@@ -1,6 +1,4 @@
-import os
-import pytest
-from utils.secure import get_secret
+from cli.utils import get_secret
 
 def test_get_secret_env(monkeypatch):
     """Test fetching secret from environment variable."""
